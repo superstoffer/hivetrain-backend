@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
-use Validator;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Validator, Auth, Hash;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
@@ -28,7 +29,7 @@ class AuthController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    //protected $redirectTo = '/';
 
     /**
      * Create a new authentication controller instance.
@@ -68,5 +69,49 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+
+    public function login(Request $request)
+    {
+        $email = $request->get('email');
+        $password = $request->get('password');
+
+        if(($email == '') || ($password == ''))
+        {
+           return response()->json([], 401);
+        }
+        else
+        {
+            $user = User::where('email', $email)->first();
+
+            if(is_null($user) || !Hash::check($password, $user->password))
+            {
+                return response()->json([], 401);
+            }
+            else
+            {
+                $user->token = str_random(30);
+                $user->save();
+
+                return response()->json(['id' => $user->id, 'token' => $user->token], 200);
+            }
+        }
+    }
+
+    public function logout(Request $request, $id)
+    {
+        $user = User::find($id);
+
+        if($user->token == $request->get('token'))
+        {
+            $user->token = '';
+            $user->save();
+
+            return response()->json([], 200);
+        }
+        else
+        {
+            return response()->json([], 404);
+        }
     }
 }

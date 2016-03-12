@@ -27,7 +27,6 @@ Route::get('/', function () {
 */
 
 Route::group(['middleware' => ['web']], function () {
-    //
 });
 
 
@@ -42,3 +41,7 @@ Route::get('/user/{id}', 'UserController@getUserById');
 Route::get('/user_performance/{id}', 'UserController@getUserPerformance');
 Route::post('/user', 'UserController@postUser');
 Route::post('/user_performance/{id}', 'UserController@updateUserPerformance');
+
+
+Route::post('/login', 'Auth\AuthController@login');
+Route::post('/logout/{id}', 'Auth\AuthController@logout');
