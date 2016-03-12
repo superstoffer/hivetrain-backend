@@ -29,3 +29,16 @@ Route::get('/', function () {
 Route::group(['middleware' => ['web']], function () {
     //
 });
+
+
+Route::get('/trades', 'TradeController@getTrades');
+Route::get('/trades/category/{cat}', 'TradeController@getTradesByCategory');
+Route::post('/trade', 'TradeController@postTrade');
+Route::delete('/trade/{id}', 'TradeController@deleteTrade');
+Route::post('/user/{user_id}/trade/{trade_id}', 'TradeController@addUserToTrade');
+
+
+Route::get('/user/{id}', 'UserController@getUserById');
+Route::get('/user_performance/{id}', 'UserController@getUserPerformance');
+Route::post('/user', 'UserController@postUser');
+Route::post('/user_performance/{id}', 'UserController@updateUserPerformance');

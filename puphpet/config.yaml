@@ -231,11 +231,9 @@ php:
             - curl
             - fpm
             - gd
-            - imagick
             - mbstring
             - mcrypt
             - mysql
-            - mysqlnd
             - opcache
         pear: {  }
         pecl: {  }

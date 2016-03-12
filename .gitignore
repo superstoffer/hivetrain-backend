@@ -12,3 +12,12 @@ storage/
 .env.php
 .env
 .env.example
+
+/bootstrap/compiled.php
+composer.phar
+.DS_Store
+Thumbs.db
+.idea/*
+/.vagrant
+index.html
+composer.lock
