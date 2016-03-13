@@ -94,4 +94,14 @@ class TradeController extends Controller
 			}
 		}
 	}
+
+	public function getStocks($name)
+	{
+		$client = new \Scheb\YahooFinanceApi\ApiClient();
+
+		$data = $client->getQuotesList($name); //Single stock
+
+		return response()->json($data);
+
+	}
 }

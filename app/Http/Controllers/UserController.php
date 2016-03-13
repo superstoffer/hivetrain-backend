@@ -25,7 +25,16 @@ class UserController extends Controller
 
 	public function getUserPerformance($id)
 	{
+		$user = User::find($id);
 
+		if(is_null($user))
+		{
+			return response()->json([], 404);
+		}
+		else
+		{
+			return response()->json($user->performance, 200);
+		}
 	}
 
 	public function postUser(Request $request)
@@ -47,12 +56,23 @@ class UserController extends Controller
 		catch(\Exception $ex)
 		{
 			return response()->json([], 400);
-
 		}
 	}
 
-	public function updateUserPerformance($id)
+	public function updateUserPerformance(Request $request, $id)
 	{
+		$user = User::find($id);
 
+		if(is_null($user))
+		{
+			return response()->json([], 404);
+		}
+		else
+		{
+			$user->performance = $request->get('performance');
+			$user->save();
+
+			return response()->json($user->id, 200);
+		}
 	}
 }

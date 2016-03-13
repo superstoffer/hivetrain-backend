@@ -45,3 +45,5 @@ Route::post('/user_performance/{id}', 'UserController@updateUserPerformance');
 
 Route::post('/login', 'Auth\AuthController@login');
 Route::post('/logout/{id}', 'Auth\AuthController@logout');
+
+Route::get('/stocks/{name}', 'TradeController@getStocks');
