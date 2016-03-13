@@ -10,11 +10,15 @@ use Illuminate\Http\Request;
 
 class TradeController extends Controller
 {
+	private $headers = [
+		'Access-Control-Allow-Origin' => '*',
+	];
+
 	public function getTrades()
 	{
 		$trades = Trade::all();
 
-		return response()->json($trades->toArray(), 200);
+		return response()->json($trades->toArray(), 200, $this->headers);
     }
 
 	public function getTradesByCategory($cat)
@@ -26,7 +30,7 @@ class TradeController extends Controller
 			$trade = $trade->toArray();
 		}
 
-		return response()->json($trades->toArray(), 200);
+		return response()->json($trades->toArray(), 200, $this->headers);
 	}
 
 	public function postTrade(Request $request)
@@ -43,11 +47,11 @@ class TradeController extends Controller
 
 			$trade->save();
 
-			return response()->json($trade->id, 200);
+			return response()->json($trade->id, 200, $this->headers);
 		}
 		catch(\Exception $ex)
 		{
-			return response()->json([], 400);
+			return response()->json([], 400, $this->headers);
 		}
 	}
 
@@ -57,13 +61,13 @@ class TradeController extends Controller
 
 		if(is_null($trade))
 		{
-			return response()->json([], 404);
+			return response()->json([], 404, $this->headers);
 		}
 		else
 		{
 			$trade->delete();
 
-			return response()->json($id, 200);
+			return response()->json($id, 200, $this->headers);
 		}
 	}
 
@@ -74,7 +78,7 @@ class TradeController extends Controller
 
 		if(is_null($trade) || is_null($user))
 		{
-			return response()->json([], 404);
+			return response()->json([], 404, $this->headers);
 		}
 		else
 		{
@@ -86,11 +90,11 @@ class TradeController extends Controller
 				$user_trade->user_position = 0;
 				$user_trade->save();
 
-				return response()->json($user_trade->id, 200);
+				return response()->json($user_trade->id, 200, $this->headers);
 			}
 			catch(\Exception $ex)
 			{
-				return response()->json([], 400);
+				return response()->json([], 400, $this->headers);
 			}
 		}
 	}
@@ -101,7 +105,7 @@ class TradeController extends Controller
 
 		$data = $client->getQuotesList($name); //Single stock
 
-		return response()->json($data);
+		return response()->json($data, 200, $this->headers);
 
 	}
 }

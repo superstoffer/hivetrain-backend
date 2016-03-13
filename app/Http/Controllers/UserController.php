@@ -9,17 +9,21 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
 
+	private $headers = [
+		'Access-Control-Allow-Origin' => '*',
+	];
+
 	public function getUserById($id)
 	{
 		$user = User::find($id);
 
 		if(is_null($user))
 		{
-			return response()->json([], 404);
+			return response()->json([], 404, $this->headers);
 		}
 		else
 		{
-			return response()->json($user, 200);
+			return response()->json($user, 200, $this->headers);
 		}
 	}
 
@@ -29,11 +33,11 @@ class UserController extends Controller
 
 		if(is_null($user))
 		{
-			return response()->json([], 404);
+			return response()->json([], 404, $this->headers);
 		}
 		else
 		{
-			return response()->json($user->performance, 200);
+			return response()->json($user->performance, 200, $this->headers);
 		}
 	}
 
@@ -51,11 +55,11 @@ class UserController extends Controller
 
 			$user->save();
 
-			return response()->json($user->id, 200);
+			return response()->json($user->id, 200, $this->headers);
 		}
 		catch(\Exception $ex)
 		{
-			return response()->json([], 400);
+			return response()->json([], 400, $this->headers);
 		}
 	}
 
@@ -65,14 +69,14 @@ class UserController extends Controller
 
 		if(is_null($user))
 		{
-			return response()->json([], 404);
+			return response()->json([], 404, $this->headers);
 		}
 		else
 		{
 			$user->performance = $request->get('performance');
 			$user->save();
 
-			return response()->json($user->id, 200);
+			return response()->json($user->id, 200, $this->headers);
 		}
 	}
 }

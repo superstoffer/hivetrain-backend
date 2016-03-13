@@ -24,6 +24,10 @@ class AuthController extends Controller
 
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
+    private $headers = [
+        'Access-Control-Allow-Origin' => '*',
+    ];
+
     /**
      * Where to redirect users after login / registration.
      *
@@ -78,7 +82,7 @@ class AuthController extends Controller
 
         if(($email == '') || ($password == ''))
         {
-           return response()->json([], 401);
+           return response()->json([], 401, $this->headers);
         }
         else
         {
@@ -86,14 +90,14 @@ class AuthController extends Controller
 
             if(is_null($user) || !Hash::check($password, $user->password))
             {
-                return response()->json([], 401);
+                return response()->json([], 401, $this->headers);
             }
             else
             {
                 $user->token = str_random(30);
                 $user->save();
 
-                return response()->json(['id' => $user->id, 'token' => $user->token], 200);
+                return response()->json(['id' => $user->id, 'token' => $user->token], 200, $this->headers);
             }
         }
     }
@@ -107,11 +111,11 @@ class AuthController extends Controller
             $user->token = '';
             $user->save();
 
-            return response()->json([], 200);
+            return response()->json([], 200, $this->headers);
         }
         else
         {
-            return response()->json([], 404);
+            return response()->json([], 404, $this->headers);
         }
     }
 }
